@@ -1,10 +1,10 @@
 #!/bin/bash
 
-MYSQL_ROOT_PASSWORD=$(cat "$MYSQL_ROOT_PASSWORD_FILE")
-MYSQL_PASSWORD=$(cat "$MYSQL_PASSWORD_FILE")
+DB_ROOT_PASSWORD=$(cat "$DB_ROOT_PASSWORD_FILE")
+DB_PASSWORD=$(cat "$DB_PASSWORD_FILE")
 
 # 環境変数のチェック
-if [ -z "$MYSQL_ROOT_PASSWORD" -o -z "$MYSQL_DATABASE" -o -z "$MYSQL_USER" -o -z "$MYSQL_PASSWORD" ]; then
+if [ -z "$DB_ROOT_PASSWORD" -o -z "$WP_DATABASE" -o -z "$WP_USER" -o -z "$DB_PASSWORD" ]; then
   echo "Error: Missing required environment variables."
   exit 1
 fi
@@ -26,23 +26,21 @@ until mysqladmin ping -h"localhost" --silent; do
 done
 
 # ルートパスワードの設定
-if [ -n "$MYSQL_ROOT_PASSWORD" ]; then
+if [ -n "$DB_ROOT_PASSWORD" ]; then
   echo "Setting root password..."
-  mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';"
+  mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PASSWORD}';"
 fi
 
 # データベースとユーザーの作成
 echo "Creating database and user..."
-mysql -u root -p"$MYSQL_ROOT_PASSWORD" -e "CREATE DATABASE IF NOT EXISTS \`$MYSQL_DATABASE\`;"
-mysql -u root -p"$MYSQL_ROOT_PASSWORD" -e "GRANT ALL ON \`$MYSQL_DATABASE\`.* TO '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
-
-# # WordPress用のデータベースを作成
-# echo "Creating WordPress database..."
-# mysql -u root -p"$MYSQL_ROOT_PASSWORD" -e "CREATE DATABASE IF NOT EXISTS \`wordpress\`;"
+mysql -u root -p"${DB_ROOT_PASSWORD}" -e "CREATE DATABASE IF NOT EXISTS \`${WP_DATABASE}\`;"
+mysql -u root -p"${DB_ROOT_PASSWORD}" -e "CREATE USER IF NOT EXISTS '${WP_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';"
+mysql -u root -p"${DB_ROOT_PASSWORD}" -e "GRANT ALL PRIVILEGES ON \`${WP_DATABASE}\`.* TO '${WP_USER}'@'%';"
+mysql -u root -p"${DB_ROOT_PASSWORD}" -e "FLUSH PRIVILEGES;"
 
 # MariaDBサーバーの停止
 echo "Stopping MariaDB server..."
-mysqladmin -u root -p"$MYSQL_ROOT_PASSWORD" shutdown
+mysqladmin -u root -p"$DB_ROOT_PASSWORD" shutdown
 
 # MariaDBサーバーをフォアグラウンドで起動
 echo "Starting MariaDB server..."
