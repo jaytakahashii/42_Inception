@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     init: true
     volumes:
-      - wordpress-db:/var/lib/mysql
+      - mariadb_data:/var/lib/mysql
     env_file:
       - .env
     environment:
@@ -39,7 +39,7 @@ services:
     expose:
       - "9000"
     volumes:
-      - wordpress_site:/var/www/html
+      - wordpress_data:/var/www/html
     networks:
       - inception
 
@@ -55,15 +55,24 @@ services:
     ports:
       - "443:443"
     volumes:
-      - wordpress_site:/var/www/html
+      - wordpress_data:/var/www/html
     networks:
       - inception
 
 volumes:
-  wordpress-db:
+  mariadb_data:
     driver: local
-  wordpress_site:
+    driver_opts:
+      type: none
+      o: bind
+      device: /Users/jay/Documents/42tokyo/lv6/Inception/data/mariadb
+
+  wordpress_data:
     driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /Users/jay/Documents/42tokyo/lv6/Inception/data/wordpress
 
 secrets:
   db_root_password:
