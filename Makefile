@@ -1,9 +1,9 @@
 include srcs/.env
 export
 
-MARIADB_NAME=srcs-mariadb
-WORDPRESS_NAME=srcs-wordpress
-NGINX_NAME=srcs-nginx
+MARIADB_NAME=mariadb
+WORDPRESS_NAME=wordpress
+NGINX_NAME=nginx
 
 COMPOSE=docker compose -f srcs/docker-compose.yml
 

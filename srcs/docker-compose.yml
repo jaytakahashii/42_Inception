@@ -2,6 +2,7 @@ services:
   mariadb:
     build: ./requirements/mariadb
     image: mariadb
+    pull_policy: build
     container_name: mariadb
     restart: unless-stopped
     init: true
@@ -23,6 +24,7 @@ services:
   wordpress:
     build: ./requirements/wordpress
     image: wordpress
+    pull_policy: build
     container_name: wordpress
     restart: unless-stopped
     init: true
@@ -48,6 +50,7 @@ services:
   nginx:
     build: ./requirements/nginx
     image: nginx
+    pull_policy: build
     container_name: nginx
     restart: unless-stopped
     init: true
