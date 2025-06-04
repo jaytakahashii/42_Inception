@@ -2,7 +2,8 @@ FROM debian:bookworm-slim
 
 RUN apt-get update
 RUN apt-get upgrade -y
-RUN apt-get install -y nginx openssl
+RUN apt-get install -y nginx openssl gettext
+
 RUN rm -rf /var/lib/apt/lists/*
 
 # Copy the default configuration file
