@@ -71,14 +71,14 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /Users/jay/Documents/42tokyo/lv6/Inception/data/mariadb
+      device: ${HOST_VOLUME_PATH}/mariadb
 
   wordpress_data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /Users/jay/Documents/42tokyo/lv6/Inception/data/wordpress
+      device: ${HOST_VOLUME_PATH}/wordpress
 
 secrets:
   db_root_password:

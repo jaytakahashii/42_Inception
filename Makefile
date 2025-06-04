@@ -1,3 +1,6 @@
+include srcs/.env
+export
+
 MARIADB_NAME=srcs-mariadb
 WORDPRESS_NAME=srcs-wordpress
 NGINX_NAME=srcs-nginx
@@ -24,8 +27,8 @@ ls:
 
 clean:
 	$(COMPOSE) down -v
-	rm -rf ./data/mariadb/*
-	rm -rf ./data/wordpress/*
+	sudo rm -rf ${HOST_VOLUME_PATH}/wordpress/*
+	sudo rm -rf ${HOST_VOLUME_PATH}/mariadb/*
 
 remove: down
 	docker rmi $(MARIADB_NAME) $(WORDPRESS_NAME) $(NGINX_NAME) || true
