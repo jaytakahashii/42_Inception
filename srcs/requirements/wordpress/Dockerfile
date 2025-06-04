@@ -1,6 +1,5 @@
 FROM debian:bookworm-slim
 
-# Install dependencies
 RUN apt-get update -y
 RUN apt-get upgrade -y
 RUN apt-get install -y \
@@ -18,8 +17,9 @@ RUN apt-get install -y \
     wget \
     unzip \
     curl \
-    mariadb-client
-RUN apt-get clean -y
+    mariadb-client \
+    net-tools \
+    iproute2
 RUN rm -rf /var/lib/apt/lists/*
 
 # Install WordPress
@@ -36,9 +36,10 @@ RUN chown -R www-data:www-data /var/www/html
 RUN curl -o /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 RUN chmod +x /usr/local/bin/wp
 
+# Configure PHP-FPM
 RUN sed -i 's|^listen = .*|listen = 0.0.0.0:9000|' /etc/php/8.2/fpm/pool.d/www.conf
 
-# start.sh script
+# Copy the start script
 COPY ./tools/start.sh /start.sh
 RUN chmod +x /start.sh
 
