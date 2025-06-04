@@ -1,19 +1,19 @@
-FROM debian:bookworm-slim
+FROM debian:bullseye-slim
 
 RUN apt-get update -y
 RUN apt-get upgrade -y
 RUN apt-get install -y \
-    php8.2-fpm \
-    php8.2-mysql \
-    php8.2-cli \
-    php8.2-curl \
-    php8.2-gd \
-    php8.2-mbstring \
-    php8.2-xml \
-    php8.2-xmlrpc \
-    php8.2-soap \
-    php8.2-intl \
-    php8.2-zip \
+    php7.4-fpm \
+    php7.4-mysql \
+    php7.4-cli \
+    php7.4-curl \
+    php7.4-gd \
+    php7.4-mbstring \
+    php7.4-xml \
+    php7.4-xmlrpc \
+    php7.4-soap \
+    php7.4-intl \
+    php7.4-zip \
     wget \
     unzip \
     curl \
@@ -24,6 +24,7 @@ RUN rm -rf /var/lib/apt/lists/*
 
 # Install WordPress
 RUN mkdir -p /var/www/html
+RUN mkdir -p /run/php
 WORKDIR /var/www/html
 RUN curl -o /tmp/wordpress.tar.gz https://wordpress.org/latest.tar.gz
 RUN tar -xzf /tmp/wordpress.tar.gz -C /var/www/html --strip-components=1
@@ -37,7 +38,7 @@ RUN curl -o /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh
 RUN chmod +x /usr/local/bin/wp
 
 # Configure PHP-FPM
-RUN sed -i 's|^listen = .*|listen = 0.0.0.0:9000|' /etc/php/8.2/fpm/pool.d/www.conf
+RUN sed -i 's|^listen = .*|listen = 0.0.0.0:9000|' /etc/php/7.4/fpm/pool.d/www.conf
 
 # Copy the start script
 COPY ./tools/start.sh /start.sh
