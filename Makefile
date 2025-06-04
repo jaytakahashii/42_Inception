@@ -24,6 +24,7 @@ ls:
 	docker ps -a
 	docker images
 	docker volume ls
+	docker network ls
 
 clean:
 	$(COMPOSE) down -v
