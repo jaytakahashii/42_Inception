@@ -54,4 +54,4 @@ help:
 	@echo "  clean     - Stop and remove containers, networks, and volumes created by up"
 	@echo "  fclean    - Clean everything including images"
 	@echo "  rebuild   - fclean and up"
-	@echo "  shutdown  - Clean everything and prune unused Docker objects"
+	@echo "  prune     - Clean up unused containers, networks, images, and optionally volumes"

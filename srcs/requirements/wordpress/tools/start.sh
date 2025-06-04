@@ -1,7 +1,6 @@
 #!/bin/bash
 set -e
 
-# 環境変数の読み込み
 DB_NAME=$WP_DATABASE
 DB_USER=$WP_USER
 DB_PASSWORD=$(cat "$DB_PASSWORD_FILE")
@@ -22,7 +21,7 @@ if [ ! -f wp-load.php ]; then
   wp core download --allow-root
 fi
 
-# WordPress 設定ファイルの生成
+# set up wp-config.php
 if [ ! -f wp-config.php ]; then
   echo "Creating wp-config.php..."
   wp config create \
@@ -33,7 +32,7 @@ if [ ! -f wp-config.php ]; then
     --allow-root
 fi
 
-# WordPress インストール（初回のみ）
+# install WordPress if not already installed
 if ! wp core is-installed --allow-root; then
   echo "Installing WordPress..."
   wp core install \
@@ -46,7 +45,7 @@ if ! wp core is-installed --allow-root; then
     --allow-root
 fi
 
-# 一般ユーザーが存在しない場合のみ作成
+# create admin user if it does not exist
 if ! wp user get "$USER_USER" --allow-root > /dev/null 2>&1; then
   echo "Creating regular user..."
   wp user create "$USER_USER" "$USER_EMAIL" \
@@ -55,6 +54,4 @@ if ! wp user get "$USER_USER" --allow-root > /dev/null 2>&1; then
     --allow-root
 fi
 
-
-# PHP-FPM 起動
 exec php-fpm7.4 -F
