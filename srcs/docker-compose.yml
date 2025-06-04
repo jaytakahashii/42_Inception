@@ -1,0 +1,99 @@
+services:
+  mariadb:
+    build: ./requirements/mariadb
+    container_name: mariadb
+    restart: unless-stopped
+    init: true
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    env_file:
+      - .env
+    environment:
+      - DB_ROOT_PASSWORD_FILE=/run/secrets/db_root_password
+      - DB_PASSWORD_FILE=/run/secrets/db_password
+    secrets:
+      - db_root_password
+      - db_password
+    expose:
+      - "3306"
+    networks:
+      - inception
+
+  wordpress:
+    build: ./requirements/wordpress
+    container_name: wordpress
+    restart: unless-stopped
+    init: true
+    depends_on:
+      - mariadb
+    env_file:
+      - .env
+    environment:
+      - DB_PASSWORD_FILE=/run/secrets/db_password
+      - WORDPRESS_ADMIN_PASSWORD_FILE=/run/secrets/wordpress_admin_password
+      - WORDPRESS_USER_PASSWORD_FILE=/run/secrets/wordpress_user_password
+    secrets:
+      - db_password
+      - wordpress_admin_password
+      - wordpress_user_password
+    expose:
+      - "9000"
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      - inception
+
+  nginx:
+    build: ./requirements/nginx
+    container_name: nginx
+    restart: unless-stopped
+    init: true
+    depends_on:
+      - wordpress
+    env_file:
+      - .env
+    environment:
+      - NGINX_KEY_FILE=/run/secrets/nginx_key
+      - NGINX_CERT_FILE=/run/secrets/nginx_cert
+    secrets:
+      - nginx_key
+      - nginx_cert
+    ports:
+      - "443:443"
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      - inception
+
+volumes:
+  mariadb_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /Users/jay/Documents/42tokyo/lv6/Inception/data/mariadb
+
+  wordpress_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /Users/jay/Documents/42tokyo/lv6/Inception/data/wordpress
+
+secrets:
+  db_root_password:
+    file: ../secrets/db_root_password.txt
+  db_password:
+    file: ../secrets/db_password.txt
+  wordpress_admin_password:
+    file: ../secrets/wordpress_admin_password.txt
+  wordpress_user_password:
+    file: ../secrets/wordpress_user_password.txt
+  nginx_key:
+    file: ../secrets/nginx.key
+  nginx_cert:
+    file: ../secrets/nginx.crt
+
+networks:
+  inception:
+    driver: bridge
