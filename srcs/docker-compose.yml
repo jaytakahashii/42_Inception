@@ -73,6 +73,7 @@ services:
 
 volumes:
   mariadb_data:
+    name: mariadb_data
     driver: local
     driver_opts:
       type: none
@@ -80,6 +81,7 @@ volumes:
       device: ${HOST_VOLUME_PATH}/mariadb
 
   wordpress_data:
+    name: wordpress_data
     driver: local
     driver_opts:
       type: none
