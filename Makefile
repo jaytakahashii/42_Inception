@@ -1,9 +1,9 @@
 include srcs/.env
 export
 
-MARIADB_NAME=srcs-mariadb
-WORDPRESS_NAME=srcs-wordpress
-NGINX_NAME=srcs-nginx
+MARIADB_NAME=mariadb
+WORDPRESS_NAME=wordpress
+NGINX_NAME=nginx
 
 COMPOSE=docker compose -f srcs/docker-compose.yml
 
@@ -21,9 +21,16 @@ restart: down up
 
 ls:
 	docker ps
+	@echo
 	docker ps -a
+	@echo
 	docker images
+	@echo
+	$(COMPOSE) ps
+	@echo
 	docker volume ls
+	@echo
+	docker network ls
 
 clean:
 	$(COMPOSE) down -v
@@ -54,4 +61,4 @@ help:
 	@echo "  clean     - Stop and remove containers, networks, and volumes created by up"
 	@echo "  fclean    - Clean everything including images"
 	@echo "  rebuild   - fclean and up"
-	@echo "  shutdown  - Clean everything and prune unused Docker objects"
+	@echo "  prune     - Clean up unused containers, networks, images, and optionally volumes"
