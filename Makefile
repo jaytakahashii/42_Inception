@@ -21,9 +21,13 @@ restart: down up
 
 ls:
 	docker ps
+	@echo
 	docker ps -a
+	@echo
 	docker images
+	@echo
 	docker volume ls
+	@echo
 	docker network ls
 
 clean:
