@@ -26,6 +26,8 @@ ls:
 	@echo
 	docker images
 	@echo
+	$(COMPOSE) ps
+	@echo
 	docker volume ls
 	@echo
 	docker network ls
