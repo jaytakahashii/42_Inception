@@ -2,6 +2,7 @@
 
 # 🐳 Inception - Dockerized Infrastructure
 
+![School](https://img.shields.io/badge/School-42_Tokyo-000000?style=flat-square&logo=42&logoColor=white&labelColor=24292e)
 ![System](https://img.shields.io/badge/System-Linux-FCC624?style=flat-square&logo=linux&logoColor=black)
 ![OS](https://img.shields.io/badge/OS-Debian%20Bullseye-A81D33?style=flat-square&logo=debian&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=flat-square&logo=docker&logoColor=white)
@@ -55,8 +56,6 @@ graph TD
 </p>
 
 </div>
-
-_This project has been created as part of the 42 curriculum._
 
 ---
 
