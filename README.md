@@ -18,7 +18,7 @@
 graph TD
     User((User)) -- "HTTPS:443 (TLSv1.2/1.3)" --> NGINX
 
-    subgraph Docker Network [🔒 Inception Network (Bridge)]
+    subgraph DockerNetwork ["🔒 Inception Network (Bridge)"]
         direction TB
         NGINX[nginx container]
         WP[wordpress + php-fpm container]
@@ -28,9 +28,9 @@ graph TD
         WP -- "TCP:3306" --> DB
     end
 
-    subgraph Host [🖥️ Host Machine]
-        Secrets[📂 /srcs/secrets/]
-        subgraph Volumes [💾 /home/login/data/]
+    subgraph HostMachine ["🖥️ Host Machine"]
+        Secrets["📂 /srcs/secrets/"]
+        subgraph Volumes ["💾 /home/login/data/"]
             VolWP[WordPress Files]
             VolDB[Database Data]
         end
